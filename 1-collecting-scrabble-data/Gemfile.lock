@@ -4,14 +4,10 @@ PATH
     internet_scrabble_club (0.1.1)
       anima (~> 0.2)
       celluloid-io (~> 0.15)
-      data_mapper (~> 1.2)
       descendants_tracker (~> 0.0)
-      dm-postgres-adapter (~> 1.2)
-      dm-validations (~> 1.2)
       events (~> 0.9)
       middleware (~> 0.1)
       parslet (~> 1.5)
-      rarff (~> 0.2.2)
 
 GEM
   remote: https://rubygems.org/
@@ -99,7 +95,6 @@ GEM
     parslet (1.6.2)
       blankslate (>= 2.0, <= 4.0)
     rake (10.3.2)
-    rarff (0.2.2)
     stringex (1.5.1)
     thread_safe (0.3.4)
     timers (4.0.1)
@@ -110,5 +105,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  celluloid-io (~> 0.15)
+  data_mapper (~> 1.2)
+  dm-postgres-adapter (~> 1.2)
+  dm-validations (~> 1.2)
+  events (~> 0.9)
   internet_scrabble_club!
   rake
