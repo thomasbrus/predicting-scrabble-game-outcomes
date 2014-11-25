@@ -1,5 +1,5 @@
 require 'celluloid/logger'
-require 'internet_scrabble_club/scraper/players'
+require_relative '../../internet_scrabble_club/scraper/players'
 
 namespace :players do
   desc <<-DESCRIPTION

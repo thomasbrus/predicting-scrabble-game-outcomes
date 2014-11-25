@@ -1,7 +1,7 @@
 require 'celluloid'
 require 'events'
+require 'internet_scrabble_club/client'
 
-require_relative '../client'
 require_relative '../db'
 require_relative '../models/plays'
 require_relative '../client/entity_extractors/examine/history'

@@ -1,4 +1,4 @@
-require 'internet_scrabble_club/metrics/games'
+require_relative '../../internet_scrabble_club/metrics/games'
 
 namespace :games do
   desc <<-DESCRIPTION

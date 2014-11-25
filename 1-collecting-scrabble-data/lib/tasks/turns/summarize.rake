@@ -1,4 +1,4 @@
-require 'internet_scrabble_club/metrics/turns'
+require_relative '../../internet_scrabble_club/metrics/turns'
 
 namespace :turns do
   desc <<-DESCRIPTION

@@ -1,4 +1,4 @@
-require 'internet_scrabble_club/db'
+require_relative '../internet_scrabble_club/db'
 
 namespace :stats do
   NEWLINE = "\n"
