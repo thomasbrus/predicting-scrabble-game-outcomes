@@ -9,10 +9,10 @@ The fastest way to get started is to import
 [this database dump](http://cl.ly/code/3Y1U3b1B263o/download/internet_scrabble_club.sql).
 It contains about 55.000 moves and can be imported using the following commands:
 
-        ```bash
-        createdb internet_scrabble_club
-        psql -d internet_scrabble_club -f internet_scrabble_club.sql
-        ```
+```bash
+createdb internet_scrabble_club
+psql -d internet_scrabble_club -f internet_scrabble_club.sql
+```
 
 ## Alternative way
 
@@ -27,13 +27,13 @@ automatically.
 The following commands will start programs that collect data from the Internet
 Scrabble Club server.
 
-        ```bash
-        bundle exec rake players:scrape NICKNAME=<nickname> PASSWORD=<password>
-        ```
+```bash
+bundle exec rake players:scrape NICKNAME=<nickname> PASSWORD=<password>
+```
 
-        ```bash
-        bundle exec rake games:scrape NICKNAME=<nickname> PASSWORD=<password>
-        ```
+```bash
+bundle exec rake games:scrape NICKNAME=<nickname> PASSWORD=<password>
+```
 
 By executing the first command, nicknames of Scrabble players will be collected
 and stored in the database. The program can be terminated by pressing
