@@ -1,9 +1,9 @@
-# 1. Collecting Scrabble Data
+# 1. Collecting scrabble data
 
 In this step we will explain how to fetch Scrabble games from the Internet
 Scrabble Club server and store these in a PostgreSQL database.
 
-## Quick start
+## 1.1a Quick start
 
 The fastest way to get started is to import
 [this database dump](http://cl.ly/code/3Y1U3b1B263o/download/internet_scrabble_club.sql).
@@ -14,7 +14,7 @@ createdb internet_scrabble_club
 psql -d internet_scrabble_club -f internet_scrabble_club.sql
 ```
 
-## Alternative way
+## 1.1b Alternative way
 
 Alternatively, the scripts in this directory can be used to fetch the data
 yourself. In order to do so, an Internet Scrabble Club account needs to be
@@ -42,3 +42,34 @@ and stored in the database. The program can be terminated by pressing
 The second command retrieves the latest ten games and their corresponding moves
 for all of the collected Scrabble players. The program will terminate once there
 are no more games to retrieve.
+
+## 1.2 Summarizing the data
+
+A summary of the collected data can be view by issuing the following command:
+
+```bash
+bundle exec rake summarize
+```
+
+The output will look something like this:
+
+```
+Player metrics
+========================================
+Total                               1605
+----------------------------------------
+
+Game metrics
+========================================
+Total                               1726
+----------------------------------------
+
+Turn metrics
+========================================
+Moves                              55282
+Passes                              2607
+Exchanges                           2081
+Total                              59970
+----------------------------------------
+```
+
