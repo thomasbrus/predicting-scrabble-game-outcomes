@@ -1,0 +1,4 @@
+source 'https://rubygems.org'
+
+gem 'internet_scrabble_club', path: '../../internet-scrabble-club'
+gem 'rake'
