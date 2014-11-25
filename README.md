@@ -1,4 +1,4 @@
-# Bachelor Thesis - Probability Calculations in Scrabble
+# Probability Calculations in Scrabble
 
 ...
 
