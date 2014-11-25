@@ -1,4 +1,4 @@
-# 1. Collecting scrabble data
+# 1. Collecting Scrabble data
 
 In this step we will explain how to fetch Scrabble games from the Internet
 Scrabble Club server and store these in a PostgreSQL database.

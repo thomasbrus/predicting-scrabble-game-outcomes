@@ -1,3 +1,3 @@
-# 2. Exporting the feature set
+# 2. Exporting the feature set from Scrabble data
 
 ...
