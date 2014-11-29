@@ -5,8 +5,6 @@ module InternetScrabbleClub
     module Plays
 
       class Change < Base
-        property :rack, String
-        property :swap_count, Integer
       end
 
     end

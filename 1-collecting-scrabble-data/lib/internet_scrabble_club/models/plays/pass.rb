@@ -5,7 +5,6 @@ module InternetScrabbleClub
     module Plays
 
       class Pass < Base
-        property :suggestion, Text
       end
 
     end
