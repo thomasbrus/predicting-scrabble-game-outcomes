@@ -2,9 +2,9 @@ require_relative 'base'
 
 module InternetScrabbleClub
   module FeatureConstructors
-    class NumberOfTurns < Base
+    class FirstPlayerNumberOfBingos < Base
       def construct
-        [turns.map(&:index).count(&:even?), turns.map(&:index).count(&:odd?)]
+        turns.select { |turn| turn.index.even? && turn.word.to_s.length == 7 }.count
       end
     end
   end

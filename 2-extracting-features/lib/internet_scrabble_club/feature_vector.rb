@@ -1,18 +1,16 @@
-require 'pry'
-
 module InternetScrabbleClub
   class FeatureVector
-    attr_reader :current_turn
+    attr_reader :turns, :game
 
-    def initialize(current_turn:)
-      @current_turn = current_turn
+    def initialize(turns:, game:)
+      @turns, @game = turns, game
       @feature_constructors = []
     end
 
     private_class_method :new
 
-    def self.construct(current_turn:)
-      new(current_turn: current_turn).tap do |feature_vector|
+    def self.construct(turns:, game:)
+      new(turns: turns, game: game).tap do |feature_vector|
         yield(feature_vector)
       end
     end
@@ -31,16 +29,6 @@ module InternetScrabbleClub
         hsh[feature_constructor.name] = feature_constructor.construct
         hsh
       end
-    end
-
-    private
-
-    def turns
-      game.plays.all(:index.lte => current_turn.index)
-    end
-
-    def game
-      current_turn.game
     end
   end
 end

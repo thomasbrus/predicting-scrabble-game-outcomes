@@ -4,8 +4,17 @@ module InternetScrabbleClub
   module FeatureConstructors
     class RatingDifference < Base
       def construct
-        ratings = Ratings.new(turns, game).construct
-        ratings[0] - ratings[1]
+        first_player_rating - second_player_rating
+      end
+
+      private
+
+      def first_player_rating
+        FirstPlayerRating.new(turns, game).construct
+      end
+
+      def second_player_rating
+        SecondPlayerRating.new(turns, game).construct
       end
     end
   end

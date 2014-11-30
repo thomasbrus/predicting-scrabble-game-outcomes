@@ -2,9 +2,9 @@ require_relative 'base'
 
 module InternetScrabbleClub
   module FeatureConstructors
-    class FinalScores < Base
+    class SecondPlayerNumberOfTurns < Base
       def construct
-        [game.first_player_final_score, game.second_player_final_score]
+        turns.map(&:index).count(&:odd?)
       end
     end
   end

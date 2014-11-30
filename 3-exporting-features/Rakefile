@@ -1,0 +1,78 @@
+require 'csv'
+require 'rarff'
+
+require_relative '../1-collecting-scrabble-data/lib/internet_scrabble_club/db'
+require_relative '../2-extracting-features/lib/internet_scrabble_club/feature_vector'
+require_relative '../2-extracting-features/lib/internet_scrabble_club/feature_constructors'
+
+include InternetScrabbleClub
+
+task :export do
+  feature_vectors = construct_feature_vectors(Models::Game.all.select(&:winner?).sample(750))
+  puts export(feature_vectors, format: ENV['FORMAT'])
+end
+
+def construct_feature_vectors(games)
+  games.map do |game|
+    game.plays.each_with_index.map do |play, index|
+      FeatureVector.construct(turns: game.plays[0..index], game: game) do |fv|
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerCurrentScore
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerCurrentScore
+        fv.use InternetScrabbleClub::FeatureConstructors::CurrentScoreDifference
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerAverageScore
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerAverageScore
+        fv.use InternetScrabbleClub::FeatureConstructors::AverageScoreDifference
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerRating
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerRating
+        fv.use InternetScrabbleClub::FeatureConstructors::RatingDifference
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerNumberOfBingos
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerNumberOfBingos
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerAverageNumberOfBingos
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerAverageNumberOfBingos
+        fv.use InternetScrabbleClub::FeatureConstructors::NextPlayer
+        fv.use InternetScrabbleClub::FeatureConstructors::NumberOfTilesLeft
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerNumberOfTurns
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerNumberOfTurns
+        fv.use InternetScrabbleClub::FeatureConstructors::Progress
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerRackBlanks
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerRackBlanks
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerRackValue
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerRackValue
+        fv.use InternetScrabbleClub::FeatureConstructors::FinalTurn
+        fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerFinalScore
+        fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerFinalScore
+        fv.use InternetScrabbleClub::FeatureConstructors::FinalScoreDifference
+        fv.use InternetScrabbleClub::FeatureConstructors::Outcome
+      end
+    end
+  end.flatten
+end
+
+def export(feature_vectors, format: format)
+  case format
+  when 'csv'
+    export_to_csv(feature_vectors)
+  when 'arff'
+    export_to_arff(feature_vectors).to_arff
+  else
+    fail 'Invalid export format. Valid options are FORMAT=csv and FORMAT=arff'
+  end
+end
+
+def export_to_csv(feature_vectors)
+  CSV.generate do |csv|
+    csv << feature_vectors.first.to_h.keys
+    feature_vectors.map(&:to_a).each { |row| csv << row }
+  end
+end
+
+def export_to_arff(feature_vectors)
+  Rarff::Relation.new('scrabble-turns').tap do |arff_relation|
+    arff_relation.send(:instances=, feature_vectors.map(&:to_a), true)
+    attribute_names = feature_vectors.first.to_h.keys
+
+    attribute_names.each_with_index do |attribute_name, index|
+      arff_relation.attributes[index].name = attribute_name
+    end
+  end
+end

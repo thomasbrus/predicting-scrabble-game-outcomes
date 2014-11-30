@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+eval(IO.read('../1-collecting-scrabble-data/Gemfile'), binding)
+
+gem 'wwood-rarff' # , '~> 0.2.2'

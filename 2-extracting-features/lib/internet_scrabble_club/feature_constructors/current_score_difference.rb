@@ -4,8 +4,17 @@ module InternetScrabbleClub
   module FeatureConstructors
     class CurrentScoreDifference < Base
       def construct
-        scores = CurrentScores.new(turns, game).construct
-        scores[0] - scores[1]
+        first_player_score - second_player_score
+      end
+
+      private
+
+      def first_player_score
+        FirstPlayerCurrentScore.new(turns, game).construct
+      end
+
+      def second_player_score
+        SecondPlayerCurrentScore.new(turns, game).construct
       end
     end
   end
