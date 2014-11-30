@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'internet_scrabble_club'
-gem 'rake'
+gem 'rake', '~> 10.3'
 
 gem 'data_mapper', '~> 1.2'
 gem 'dm-postgres-adapter', '~> 1.2'

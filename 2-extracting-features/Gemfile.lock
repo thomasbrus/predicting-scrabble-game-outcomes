@@ -115,4 +115,4 @@ DEPENDENCIES
   events (~> 0.9)
   internet_scrabble_club
   pry
-  rake
+  rake (~> 10.3)
