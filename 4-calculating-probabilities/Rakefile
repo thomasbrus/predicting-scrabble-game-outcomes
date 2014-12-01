@@ -1,0 +1,59 @@
+require 'csv'
+
+namespace :weka do
+  desc <<-DESCRIPTION
+    Parses the result of a weka result buffer and exports it to CSV
+  DESCRIPTION
+
+  task :parse_results do
+    # Usage: $ rake weka:parse_results INPUT_FILE=weka-result-buffer.txt
+    result_buffer = File.read(ENV.fetch('INPUT_FILE'))
+    parsed_results = parse_result_buffer(result_buffer)
+
+    # Export the predictions to CSV
+    puts CSV.generate { |csv|
+      csv << parsed_results.header
+      parsed_results.rows.each(&csv.method(:<<))
+    }
+  end
+end
+
+def parse_result_buffer(result_buffer)
+  OpenStruct.new(header: extract_header(result_buffer), rows: extract_rows(result_buffer))
+end
+
+def extract_header(result_buffer)
+  # Find the line that contains the header
+  raw_header = result_buffer.lines.find { |line| line.start_with?('inst#,') }
+
+  # Extract attributes from weka output
+  header = raw_header.match(/\((.*)\)/)[1].split(',')
+
+  # Append some more attributes to the header
+  header += %w(actual_outcome predicted_outcome)
+  header += %w(first_player_probability second_player_probability)
+end
+
+def extract_rows(result_buffer)
+  Array.new.tap do |rows|
+    # Scan the output for lines that contain predictions
+    result_buffer.lines.each do |result_line|
+      if result_line =~ /\d\:(true|false)\s+\d\:(true|false)/
+        actual, predicted = $1, $2
+      end
+
+      if result_line =~ /(0|1|0\.\d+)\s+\*?(0|1||0\.\d+)\s+\(/
+        p1, p2 = $1, $2
+      end
+
+      if result_line =~ /\((.*)\)/
+        attributes = $1.split(',')
+      end
+
+      # Append row if the line was parsed successfully
+      if actual && predicted && p1 && p2 && attributes
+        rows << attributes + [actual, predicted, p1, p2]
+      end
+    end
+  end
+end

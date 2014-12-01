@@ -1,0 +1,3 @@
+source 'https://rubygems.org'
+
+eval(IO.read('../1-collecting-scrabble-data/Gemfile'), binding)
