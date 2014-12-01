@@ -2,7 +2,7 @@ require 'csv'
 
 namespace :weka do
   desc <<-DESCRIPTION
-    Parses the result of a weka result buffer and exports it to CSV
+    Parses the predictions in a weka result buffer and exports it to CSV
   DESCRIPTION
 
   task :parse_results do
