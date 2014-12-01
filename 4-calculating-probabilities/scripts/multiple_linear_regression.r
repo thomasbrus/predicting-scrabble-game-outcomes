@@ -34,6 +34,8 @@ turns.lm <- lm(final_score_difference ~ first_player_current_score + second_play
 
 summaryOutput <- summary(turns.lm)
 
+# Function that estimates the probability that the first player wins
+# a scrabble game based on a linear model and a specific scrabble turn
 estimateProbability <- function(model, turn) {
   turn.prediction <- predict.lm(model, turn, interval="predict", se.fit=TRUE)
 
@@ -41,14 +43,25 @@ estimateProbability <- function(model, turn) {
   standardError <- turn.prediction$residual.scale
   degreesOfFreedom <- turn.prediction$df
 
+  # Extract the predicted difference in final scores of both players
   predictedValue <- turn.prediction$fit[[1]]
+  
+  # This value refers to the t-value used in a Student's t-distribution
+  # See http://en.wikipedia.org/wiki/Student%27s_t-distribution
+  # The t-value is chosen such that the interval around the predicted value touches zero
+  # at either the beginning or the end
   tValue <- abs(predictedValue) / (sqrt(standardErrorFitted ^ 2 + standardError ^ 2))
 
+  # Calculate the interval (lower and upper)
+  # Either the lower bound or the upper bound is zero
   lwr <- predictedValue - (tValue * sqrt(standardErrorFitted ^ 2 + standardError ^ 2))
   upr <- predictedValue + (tValue * sqrt(standardErrorFitted ^ 2 + standardError ^ 2))
 
+  # This basically looks up the two-sided probability that the final score
+  # will be within the calculated interval
   pValue <- 1 - (1 - pt(tValue, degreesOfFreedom)) * 2
 
+  # ...
   estimatedProbability <- pValue + (1 - pValue) / 2
 
   # Invert the probability if it is predicted that the first player
