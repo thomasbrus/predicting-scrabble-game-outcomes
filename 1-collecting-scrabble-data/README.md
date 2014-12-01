@@ -73,3 +73,5 @@ Total                              59970
 ----------------------------------------
 ```
 
+# Next up
+[The next chapter explains](../2-extracting-features) how to transform this data so that machine learning algorithms can make sense of it.

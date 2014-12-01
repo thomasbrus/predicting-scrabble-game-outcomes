@@ -23,3 +23,6 @@ bundle exec rake weka:parse_results INPUT_FILE=weka-results/knn.txt > results/kn
 ```bash
 Rscript scripts/multiple_linear_regression.r > results/mlr.csv
 ```
+
+# Next up
+[In the next and final chapter](../5-analyzing-results), we will analyze the results produced in this chapter.
