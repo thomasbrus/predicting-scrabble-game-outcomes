@@ -7,7 +7,12 @@ require_relative '../2-extracting-features/lib/internet_scrabble_club/feature_co
 
 include InternetScrabbleClub
 
+desc <<-DESCRIPTION
+  Constructs a set of feature vectors and exports it to CSV
+DESCRIPTION
+
 task :export do
+  # Usage: $ bundle exec rake export FORMAT=csv > ...
   feature_vectors = construct_feature_vectors(Models::Game.all.select(&:winner?).sample(750))
   puts export(feature_vectors, format: ENV['FORMAT'])
 end
