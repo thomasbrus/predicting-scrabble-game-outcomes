@@ -29,7 +29,7 @@ def construct_feature_vectors(games)
         fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerNumberOfBingos
         fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerAverageNumberOfBingos
         fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerAverageNumberOfBingos
-        fv.use InternetScrabbleClub::FeatureConstructors::NextPlayer
+        # fv.use InternetScrabbleClub::FeatureConstructors::NextPlayer
         fv.use InternetScrabbleClub::FeatureConstructors::NumberOfTilesLeft
         fv.use InternetScrabbleClub::FeatureConstructors::FirstPlayerNumberOfTurns
         fv.use InternetScrabbleClub::FeatureConstructors::SecondPlayerNumberOfTurns
