@@ -1,3 +1,0 @@
-# 2. Calculating performance measures
-
-...
