@@ -1,4 +1,4 @@
-# 2. Exporting feature sets
+# 3. Exporting feature sets
 
 ...
 
