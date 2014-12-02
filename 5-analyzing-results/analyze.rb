@@ -1,6 +1,7 @@
 require 'ostruct'
 require 'pry'
 require 'csv'
+require 'colored'
 
 class Summary
   def initialize(results)
@@ -102,22 +103,18 @@ end
 filename = ARGV.fetch(0)
 results = CSV.table(filename).map(&ResultWrapper.method(:new))
 
-puts "# All turns"
-puts Summary.new(results)
+# sorted_results = results.sort_by(&:number_of_turns)
+# grouped_results = sorted_results.each_slice(1000)
 
-# sorted_results = results.select { |result| result.progress > 0 }.sort_by(&:progress)
-sorted_results = results.sort_by(&:number_of_turns)
-grouped_results = sorted_results.each_slice(1000)
-
-puts "\n# Partitioned by number of turns"
-puts grouped_results.map(&Summary.method(:new))
+# puts "\n# Partitioned by number of turns"
+# puts grouped_results.map(&Summary.method(:new))
 
 suprising_results = results.select do |result|
   (result.current_score_difference > 0) != result.actual &&
     result.current_score_difference != 0
 end
 
-puts "\n# Only where abs(current_score_difference) != abs(final_score_difference)"
+puts "# Only where sign(current_score_difference) != sign(final_score_difference)".bold.blue
 puts Summary.new(suprising_results)
 
 more_suprising_results = results.select do |result|
@@ -125,6 +122,9 @@ more_suprising_results = results.select do |result|
     result.rating_difference != 0
 end
 
-puts "\n# Only where abs(rating_difference) != abs(final_score_difference)"
+puts "\n# Only where sign(rating_difference) != sign(final_score_difference)".bold.blue
 puts Summary.new(more_suprising_results)
+
+puts "\n# All turns".bold.blue
+puts Summary.new(results)
 
