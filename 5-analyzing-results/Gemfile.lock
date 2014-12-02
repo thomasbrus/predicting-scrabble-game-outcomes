@@ -20,6 +20,7 @@ GEM
       celluloid (>= 0.16.0)
       nio4r (>= 1.0.0)
     coderay (1.1.0)
+    colored (1.2)
     data_mapper (1.2.0)
       dm-aggregates (~> 1.2.0)
       dm-constraints (~> 1.2.0)
@@ -109,6 +110,7 @@ PLATFORMS
 
 DEPENDENCIES
   celluloid-io (~> 0.15)
+  colored
   data_mapper (~> 1.2)
   dm-postgres-adapter (~> 1.2)
   dm-validations (~> 1.2)
