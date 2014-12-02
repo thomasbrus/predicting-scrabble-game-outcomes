@@ -14,14 +14,18 @@ splitData <- function(dataframe, seed = NULL) {
 # .............................................................................
 
 # Import scrabble turns from CSV file
-turns <- read.csv("../3-exporting-features/data/all-turns.csv", header = T)
+turns <- read.csv("../3-exporting-features/data/turns.csv", header = T)
 
 # Split the data set
 splittedTurns <- splitData(turns)
 
 # Extract both splits into variables
-trainingSet <- splittedTurns$trainingSet
-testSet <- splittedTurns$testSet
+# trainingSet <- splittedTurns$trainingSet
+# testSet <- splittedTurns$testSet
+
+splitIndex <- floor((2 / 3) * nrow(turns))
+trainingSet <- turns[1:splitIndex, ]
+testSet <- turns[(splitIndex + 1):nrow(turns), ]
 
 # Setup a linear model that can predict the final score difference
 turns.lm <- lm(final_score_difference ~ first_player_current_score + second_player_current_score +
