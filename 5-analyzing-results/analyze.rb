@@ -103,28 +103,50 @@ end
 filename = ARGV.fetch(0)
 results = CSV.table(filename).map(&ResultWrapper.method(:new))
 
-# sorted_results = results.sort_by(&:number_of_turns)
-# grouped_results = sorted_results.each_slice(1000)
-
-# puts "\n# Partitioned by number of turns"
-# puts grouped_results.map(&Summary.method(:new))
-
-suprising_results = results.select do |result|
-  (result.current_score_difference > 0) != result.actual &&
-    result.current_score_difference != 0
+def suprising_results(results)
+  results.select do |result|
+    (result.current_score_difference > 0) != result.actual &&
+      result.current_score_difference != 0
+  end
 end
 
-puts "# Only where sign(current_score_difference) != sign(final_score_difference)".bold.blue
-puts Summary.new(suprising_results)
-
-more_suprising_results = results.select do |result|
-  (result.rating_difference > 0) != result.actual &&
-    result.rating_difference != 0
+def more_suprising_results(results)
+  results.select do |result|
+    (result.rating_difference > 0) != result.actual &&
+      result.rating_difference != 0
+  end
 end
 
-puts "\n# Only where sign(rating_difference) != sign(final_score_difference)".bold.blue
-puts Summary.new(more_suprising_results)
+def not_so_suprising_results(results)
+  sorted_results = results.sort_by { |result| result.current_score_difference.abs }
+  sorted_results.take((results.count * 0.10).ceil)
+end
 
-puts "\n# All turns".bold.blue
+def group_by_score_difference(results)
+  sorted_results = results.sort_by(&:absolute_score_difference)
+  sorted_results.each_slice((results.count * 0.10).ceil)
+end
+
+def group_by_number_of_turns(results)
+  sorted_results = results.sort_by(&:number_of_turns)
+  sorted_results.each_slice((results.count * 0.10).ceil)
+end
+
+puts "\n# Grouped by number of turns (0-10%, 10%-20%, ...)"
+puts group_by_number_of_turns(results).map(&Summary.method(:new))
+
+puts "\n# Grouped by score difference (0-10%, 10%-20%, ...)"
+puts group_by_score_difference(results).map(&Summary.method(:new))
+
+# puts "# Only where sign(current_score_difference) != sign(final_score_difference)".bold.green
+# puts Summary.new(suprising_results(results))
+
+# puts "\n# Only where sign(rating_difference) != sign(final_score_difference)".bold.green
+# puts Summary.new(more_suprising_results(results))
+
+# puts "\n# Only where abs(score_difference) is small".bold.green
+# puts Summary.new(not_so_suprising_results(results))
+
+puts "\n# All turns".bold.green
 puts Summary.new(results)
 
