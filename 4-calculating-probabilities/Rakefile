@@ -1,5 +1,28 @@
 require 'csv'
 
+namespace :dummy do
+  desc <<-DESCRIPTION
+    Make scrabble predictions in the most naive way
+  DESCRIPTION
+
+  task :make_predictions do
+    turns = CSV.table('../3-exporting-features/data/turns.csv')
+
+    puts (CSV.generate do |csv|
+      csv << turns.headers[0..-2] + [
+        :actual_outcome, :predicted_outcome,
+        :first_player_probability, :second_player_probability
+      ]
+
+      turns.each do |turn|
+        predicted_outcome = turn.fetch(:current_score_difference) > 0
+        estimated_probabilities = predicted_outcome ? [1, 0] : [0, 1]
+        csv << turn.fields + [predicted_outcome] + estimated_probabilities
+      end
+    end)
+  end
+end
+
 namespace :weka do
   desc <<-DESCRIPTION
     Parses the predictions in a weka result buffer and exports it to CSV
@@ -11,10 +34,10 @@ namespace :weka do
     parsed_results = parse_result_buffer(result_buffer)
 
     # Export the predictions to CSV
-    puts CSV.generate { |csv|
+    puts (CSV.generate do |csv|
       csv << parsed_results.header
       parsed_results.rows.each(&csv.method(:<<))
-    }
+    end)
   end
 end
 
