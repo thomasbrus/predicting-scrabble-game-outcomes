@@ -1,40 +1,21 @@
-# Randomly divides the dataframe into two equally large groups
-splitData <- function(dataframe, seed = NULL) {
-  if (!is.null(seed)) set.seed(seed)
-
-  index <- 1:nrow(dataframe)
-  trainingSetIndex <- sample(index, trunc(length(index) / 2))
-
-  trainingSet <- dataframe[trainingSetIndex, ]
-  testSet <- dataframe[-trainingSetIndex, ]
-
-  list(trainingSet=trainingSet, testSet=testSet)
-}
-
-# .............................................................................
-
-# Import scrabble turns from CSV file
+# Import Scrabble turns from CSV file
 turns <- read.csv("../3-exporting-features/data/turns.csv", header = T)
 
 # Split the data set
-splittedTurns <- splitData(turns)
-
-# Extract both splits into variables
-# trainingSet <- splittedTurns$trainingSet
-# testSet <- splittedTurns$testSet
-
 splitIndex <- floor((2 / 3) * nrow(turns))
 trainingSet <- turns[1:splitIndex, ]
 testSet <- turns[(splitIndex + 1):nrow(turns), ]
 
 # Setup a linear model that can predict the final score difference
 turns.lm <- lm(final_score_difference ~ first_player_current_score + second_player_current_score +
-               first_player_average_score + second_player_average_score + first_player_rating +
-               second_player_rating + first_player_number_of_bingos + second_player_number_of_bingos +
+               first_player_average_score + second_player_average_score +
+               first_player_rating + second_player_rating +
+               first_player_number_of_bingos + second_player_number_of_bingos +
                first_player_average_number_of_bingos + second_player_average_number_of_bingos +
                number_of_tiles_left + first_player_number_of_turns + second_player_number_of_turns +
                progress + first_player_rack_blanks + second_player_rack_blanks +
                first_player_rack_value + second_player_rack_value, data=trainingSet)
+
 
 summaryOutput <- summary(turns.lm)
 
