@@ -1,4 +1,4 @@
-# Probability Calculations in Scrabble
+# Predicting Scrabble game outcomes
 
 ...
 
